@@ -42,5 +42,10 @@ def api_route():
 
     return jsonify(coords=route_coords)
 
+@app.route("/api/nodes")
+def api_nodes():
+    # Devuelve la lista de IDs de nodos del grafo
+    return jsonify(list(G.nodes))
+
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
