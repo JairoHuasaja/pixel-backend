@@ -39,7 +39,7 @@ def api_connectivity():
     return jsonify(connected=connected)
 
 # Búsqueda voraz (greedy best-first) para ir de origen a destino en O(E + d*log d)
-def greedy_path(orig, dest):
+def nearest_neighbor_path(orig, dest):
     if orig not in G or dest not in G:
         raise ValueError(f"Origen o destino no en el grafo")
     path = [orig]
