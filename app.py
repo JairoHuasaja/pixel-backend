@@ -38,7 +38,7 @@ def api_connectivity():
     connected = nx.has_path(G, orig, dest)
     return jsonify(connected=connected)
 
-# Búsqueda voraz (greedy best-first) para ir de origen a destino en O(E + d*log d)
+# Nearest Neighbor para Ruta 3: signature acepta origen y destino
 def nearest_neighbor_path(orig, dest):
     if orig not in G or dest not in G:
         raise ValueError(f"Origen o destino no en el grafo")
@@ -46,11 +46,9 @@ def nearest_neighbor_path(orig, dest):
     visited = {orig}
     current = orig
     while current != dest:
-        # vecinos no visitados
         neigh = [n for n in G.adj[current] if n not in visited]
         if not neigh:
             break
-        # elegir vecino con heurística mínima al destino
         next_node = min(neigh, key=lambda v: haversine(v, dest))
         path.append(next_node)
         visited.add(next_node)
