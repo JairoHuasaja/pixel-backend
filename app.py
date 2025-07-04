@@ -38,19 +38,22 @@ def api_connectivity():
     connected = nx.has_path(G, orig, dest)
     return jsonify(connected=connected)
 
-# Heurística Nearest Neighbor para TSP aproximado (O(V^2))
-def nearest_neighbor_path(orig):
-    unvisited = set(G.nodes())
-    if orig not in unvisited:
-        raise ValueError(f"Nodo origen '{orig}' no en el grafo")
+# Búsqueda voraz (greedy best-first) para ir de origen a destino en O(E + d*log d)
+def greedy_path(orig, dest):
+    if orig not in G or dest not in G:
+        raise ValueError(f"Origen o destino no en el grafo")
     path = [orig]
-    unvisited.remove(orig)
+    visited = {orig}
     current = orig
-    while unvisited:
-        # seleccionar el nodo más cercano por línea recta
-        next_node = min(unvisited, key=lambda v: haversine(current, v))
+    while current != dest:
+        # vecinos no visitados
+        neigh = [n for n in G.adj[current] if n not in visited]
+        if not neigh:
+            break
+        # elegir vecino con heurística mínima al destino
+        next_node = min(neigh, key=lambda v: haversine(v, dest))
         path.append(next_node)
-        unvisited.remove(next_node)
+        visited.add(next_node)
         current = next_node
     return path
 
