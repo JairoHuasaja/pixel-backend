@@ -76,7 +76,7 @@ def api_route():
         if algo == "astar":
             path = nx.astar_path(G, orig, dest, heuristic=haversine, weight="dist")
         elif algo == "nn":
-            path = nearest_neighbor_path(orig)
+            path = nearest_neighbor_path(orig, dest)
         elif algo == "cluster":
             path = cluster_path(orig, dest)
         else:
